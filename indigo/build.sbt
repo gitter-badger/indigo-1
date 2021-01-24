@@ -16,7 +16,7 @@ lazy val scalaFixSettings: Seq[sbt.Def.Setting[_]] =
 
 lazy val commonSettings: Seq[sbt.Def.Setting[_]] = Seq(
   version := indigoVersion,
-  scalaVersion := dottyVersion,
+  scalaVersion := scala213Version,
   crossScalaVersions := Seq(dottyVersion, scala213Version),
   organization := "io.indigoengine",
   libraryDependencies ++= Seq(
@@ -24,7 +24,6 @@ lazy val commonSettings: Seq[sbt.Def.Setting[_]] = Seq(
   ),
   testFrameworks += new TestFramework("munit.Framework"),
   Test / scalaJSLinkerConfig ~= { _.withModuleKind(ModuleKind.CommonJSModule) },
-  crossScalaVersions := Seq(dottyVersion, scala213Version),
   libraryDependencies ++= (if (isDotty.value) Nil else Seq(compilerPlugin(scalafixSemanticdb)))
 ) ++ scalaFixSettings
 
@@ -131,13 +130,10 @@ lazy val indigoFacades =
   project
     .in(file("indigo-facades"))
     .enablePlugins(ScalaJSPlugin)
+    .settings(commonSettings: _*)
     .settings(publishSettings: _*)
     .settings(
       name := "indigo-facades",
-      version := indigoVersion,
-      scalaVersion := dottyVersion,
-      crossScalaVersions := Seq(dottyVersion, scala213Version),
-      organization := "io.indigoengine",
       libraryDependencies ++= Seq(
         ("org.scala-js" %%% "scalajs-dom" % "1.1.0").withDottyCompat(scalaVersion.value)
       )
