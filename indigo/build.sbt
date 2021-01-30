@@ -195,6 +195,15 @@ lazy val indigoJsonCirce =
     )
     .dependsOn(indigoExtras)
 
+lazy val indigoShaders =
+  project
+    .in(file("indigo-shaders"))
+    .settings(commonSettings: _*)
+    .settings(publishSettings: _*)
+    .settings(
+      name := "indigo-shaders"
+    )
+
 // Root
 lazy val indigoProject =
   (project in file("."))
@@ -214,6 +223,7 @@ lazy val indigoProject =
       indigoExtras,
       indigo,
       indigoFacades,
+      indigoShaders,
       sandbox,
       perf
     )
